@@ -15,24 +15,33 @@ class Shop {
  
   static updateBrie(item) {
     item.sellIn = item.sellIn - 1;
-    item.quality = Shop.boundQuality(item.quality + 1);
-    if (item.sellIn < 0) {
+    if (item.sellIn >= 0) {
       item.quality = Shop.boundQuality(item.quality + 1);
+    } else {
+      item.quality = Shop.boundQuality(item.quality + 2);
     }
   };
 
   static updatePass(item) {
     item.sellIn = item.sellIn - 1;
-    item.quality = Shop.boundQuality(item.quality + 1);
-    if (item.sellIn < Shop.PASSTHRESH1) {
-        item.quality = Shop.boundQuality(item.quality + 1);
-    }
-    if (item.sellIn < Shop.PASSTHRESH2) {
-        item.quality = Shop.boundQuality(item.quality + 1);
-    }
+
     if (item.sellIn < 0) {
       item.quality = 0;
+      return;
     }
+
+    let increase;
+
+    if (item.sellIn >= Shop.PASSTHRESH1) {
+      increase = 1;
+    } else if (item.sellIn >= Shop.PASSTHRESH2) {
+      increase = 2;
+    } else {
+      increase = 3;
+    }
+
+    item.quality = Shop.boundQuality(item.quality + increase);
+    
   }
 
   static updateSulf(item) {
@@ -41,10 +50,12 @@ class Shop {
 
   static updateRegular(item) {
     item.sellIn = item.sellIn - 1;
-    item.quality = Shop.boundQuality(item.quality - 1);
-    if (item.sellIn < 0) {
+
+    if (item.sellIn >= 0) {
       item.quality = Shop.boundQuality(item.quality - 1);
-    }
+    } else {
+      item.quality = Shop.boundQuality(item.quality - 2);
+    }    
   }
 
   static boundQuality(quality) {
