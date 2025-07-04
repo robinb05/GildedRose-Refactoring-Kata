@@ -14,6 +14,8 @@ class Shop {
   static PASSTHRESH2 = 5;
   static QUAL_LOWER = 0;
   static QUAL_UPPER = 50;
+  static REG_DEGRADE_PRE = 1;
+  static REG_DEGRADE_POST = 2;
 
   static updateItemSellIn(item) {
     if (item.name != "Sulfuras, Hand of Ragnaros") {
@@ -52,10 +54,18 @@ class Shop {
   static updateRegularQuality(item) {
 
     if (item.sellIn >= 0) {
-      return Shop.boundQuality(item.quality - 1);
+      return Shop.boundQuality(item.quality - Shop.REG_DEGRADE_PRE);
     } else {
-      return Shop.boundQuality(item.quality - 2);
+      return Shop.boundQuality(item.quality - Shop.REG_DEGRADE_POST);
     }    
+  }
+
+  static updateConjuredQuality(item) {
+    if (item.sellIn >= 0) {
+      return Shop.boundQuality(item.quality - 2*Shop.REG_DEGRADE_PRE);
+    } else {
+      return Shop.boundQuality(item.quality - 2*Shop.REG_DEGRADE_POST);
+    } 
   }
 
   static boundQuality(quality) {
@@ -75,6 +85,8 @@ class Shop {
       return Shop.updatePassQuality(item);
     } else if (item.name == "Sulfuras, Hand of Ragnaros") {
       return Shop.updateSulfQuality(item);
+    } else if (item.name == "Conjured") {
+      return Shop.updateConjuredQuality(item);
     } else {
       return Shop.updateRegularQuality(item);
     }
