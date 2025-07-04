@@ -65,4 +65,9 @@ describe("Gilded Rose", function() {
     expect(items[0].quality).toBe(2);
   });
 
+  it("quality degrades 2x speed as sell in passes", function(){
+    const gildedRose = new Shop([new Item("hello", -1, 3)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(1);
+  })
 });
