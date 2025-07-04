@@ -12,19 +12,37 @@ class Shop {
   }
  
   updateBrie(item) {
-    
+    item.quality = this.boundQuality(item.quality + 1);
+    item.sellIn = item.sellIn - 1;
+    if (item.sellIn < 0) {
+      item.quality = this.boundQuality(item.quality + 1);
+    }
   };
 
   updatePass(item) {
-
+    item.quality = this.boundQuality(item.quality + 1);
+    if (item.sellIn < 11) {
+        item.quality = this.boundQuality(item.quality + 1);
+    }
+    if (item.sellIn < 6) {
+        item.quality = this.boundQuality(item.quality + 1);
+    }
+    item.sellIn = item.sellIn - 1;
+    if (item.sellIn < 0) {
+      item.quality = 0;
+    }
   }
 
   updateSulf(item) {
-
+    return;
   }
 
   updateRegular(item) {
-
+    item.quality = this.boundQuality(item.quality - 1);
+    item.sellIn = item.sellIn - 1;
+    if (item.sellIn < 0) {
+      item.quality = this.boundQuality(item.quality - 1);
+    }
   }
 
   boundQuality(quality) {
@@ -39,36 +57,18 @@ class Shop {
 
   updateItemQuality(item) {
     if (item.name == 'Aged Brie') {
-      item.quality = this.boundQuality(item.quality + 1);
-      item.sellIn = item.sellIn - 1;
-      if (item.sellIn < 0) {
-        item.quality = this.boundQuality(item.quality + 1);
-      }
+      this.updateBrie(item);
     } else if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
-      item.quality = this.boundQuality(item.quality + 1);
-      if (item.sellIn < 11) {
-          item.quality = this.boundQuality(item.quality + 1);
-      }
-      if (item.sellIn < 6) {
-          item.quality = this.boundQuality(item.quality + 1);
-      }
-      item.sellIn = item.sellIn - 1;
-      if (item.sellIn < 0) {
-        item.quality = 0;
-      }
+      this.updatePass(item);
     } else if (item.name == "Sulfuras, Hand of Ragnaros") {
-
+      this.updateSulf(item);
     } else {
-      item.quality = this.boundQuality(item.quality - 1);
-      item.sellIn = item.sellIn - 1;
-      if (item.sellIn < 0) {
-        item.quality = this.boundQuality(item.quality - 1);
-      }
+      this.updateRegular(item);
     }
-    return item;
   }
 
   updateQuality() {
+    // side effects ??!!!
     this.items.forEach(item => this.updateItemQuality(item))
     return this.items;
   }
