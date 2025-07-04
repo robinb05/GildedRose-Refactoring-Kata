@@ -37,37 +37,39 @@ class Shop {
     }
   };
 
-  updateQuality() {
-    for (let i = 0; i < this.items.length; i++) { //for all items
-      //if not aged brie, backstage passes or sulfuras hand ragnaros, and quality is > 0, reduce qual by 1
-      if (this.items[i].name == 'Aged Brie') {
-        this.items[i].quality = this.boundQuality(this.items[i].quality + 1);
-        this.items[i].sellIn = this.items[i].sellIn - 1;
-        if (this.items[i].sellIn < 0) {
-          this.items[i].quality = this.boundQuality(this.items[i].quality + 1);
-        }
-      } else if (this.items[i].name == 'Backstage passes to a TAFKAL80ETC concert') {
-        this.items[i].quality = this.boundQuality(this.items[i].quality + 1);
-        if (this.items[i].sellIn < 11) {
-            this.items[i].quality = this.boundQuality(this.items[i].quality + 1);
-          }
-        if (this.items[i].sellIn < 6) {
-            this.items[i].quality = this.boundQuality(this.items[i].quality + 1);
-        }
-        this.items[i].sellIn = this.items[i].sellIn - 1;
-        if (this.items[i].sellIn < 0) {
-          this.items[i].quality = 0;
-        }
-      } else if (this.items[i].name == "Sulfuras, Hand of Ragnaros") {
+  updateItemQuality(item) {
+    if (item.name == 'Aged Brie') {
+      item.quality = this.boundQuality(item.quality + 1);
+      item.sellIn = item.sellIn - 1;
+      if (item.sellIn < 0) {
+        item.quality = this.boundQuality(item.quality + 1);
+      }
+    } else if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
+      item.quality = this.boundQuality(item.quality + 1);
+      if (item.sellIn < 11) {
+          item.quality = this.boundQuality(item.quality + 1);
+      }
+      if (item.sellIn < 6) {
+          item.quality = this.boundQuality(item.quality + 1);
+      }
+      item.sellIn = item.sellIn - 1;
+      if (item.sellIn < 0) {
+        item.quality = 0;
+      }
+    } else if (item.name == "Sulfuras, Hand of Ragnaros") {
 
-      } else {
-        this.items[i].quality = this.boundQuality(this.items[i].quality - 1);
-        this.items[i].sellIn = this.items[i].sellIn - 1;
-        if (this.items[i].sellIn < 0) {
-          this.items[i].quality = this.boundQuality(this.items[i].quality - 1);
-        }
+    } else {
+      item.quality = this.boundQuality(item.quality - 1);
+      item.sellIn = item.sellIn - 1;
+      if (item.sellIn < 0) {
+        item.quality = this.boundQuality(item.quality - 1);
       }
     }
+    return item;
+  }
+
+  updateQuality() {
+    this.items.forEach(item => this.updateItemQuality(item))
     return this.items;
   }
 }
