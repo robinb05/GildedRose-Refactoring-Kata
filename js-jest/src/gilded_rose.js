@@ -10,42 +10,44 @@ class Shop {
   constructor(items=[]){
     this.items = items;
   }
+  static PASSTHRESH1 = 10;
+  static PASSTHRESH2 = 5
  
-  updateBrie(item) {
-    item.quality = this.boundQuality(item.quality + 1);
+  static updateBrie(item) {
     item.sellIn = item.sellIn - 1;
+    item.quality = Shop.boundQuality(item.quality + 1);
     if (item.sellIn < 0) {
-      item.quality = this.boundQuality(item.quality + 1);
+      item.quality = Shop.boundQuality(item.quality + 1);
     }
   };
 
-  updatePass(item) {
-    item.quality = this.boundQuality(item.quality + 1);
-    if (item.sellIn < 11) {
-        item.quality = this.boundQuality(item.quality + 1);
-    }
-    if (item.sellIn < 6) {
-        item.quality = this.boundQuality(item.quality + 1);
-    }
+  static updatePass(item) {
     item.sellIn = item.sellIn - 1;
+    item.quality = Shop.boundQuality(item.quality + 1);
+    if (item.sellIn < Shop.PASSTHRESH1) {
+        item.quality = Shop.boundQuality(item.quality + 1);
+    }
+    if (item.sellIn < Shop.PASSTHRESH2) {
+        item.quality = Shop.boundQuality(item.quality + 1);
+    }
     if (item.sellIn < 0) {
       item.quality = 0;
     }
   }
 
-  updateSulf(item) {
+  static updateSulf(item) {
     return;
   }
 
-  updateRegular(item) {
-    item.quality = this.boundQuality(item.quality - 1);
+  static updateRegular(item) {
     item.sellIn = item.sellIn - 1;
+    item.quality = Shop.boundQuality(item.quality - 1);
     if (item.sellIn < 0) {
-      item.quality = this.boundQuality(item.quality - 1);
+      item.quality = Shop.boundQuality(item.quality - 1);
     }
   }
 
-  boundQuality(quality) {
+  static boundQuality(quality) {
     if (quality > 50) {
       return 50;
     } else if (quality < 0) {
@@ -55,21 +57,21 @@ class Shop {
     }
   };
 
-  updateItemQuality(item) {
+  static updateItemQuality(item) {
     if (item.name == 'Aged Brie') {
-      this.updateBrie(item);
+      Shop.updateBrie(item);
     } else if (item.name == 'Backstage passes to a TAFKAL80ETC concert') {
-      this.updatePass(item);
+      Shop.updatePass(item);
     } else if (item.name == "Sulfuras, Hand of Ragnaros") {
-      this.updateSulf(item);
+      Shop.updateSulf(item);
     } else {
-      this.updateRegular(item);
+      Shop.updateRegular(item);
     }
   }
 
   updateQuality() {
     // side effects ??!!!
-    this.items.forEach(item => this.updateItemQuality(item))
+    this.items.forEach(item => Shop.updateItemQuality(item))
     return this.items;
   }
 }
