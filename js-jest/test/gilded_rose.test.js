@@ -70,4 +70,13 @@ describe("Gilded Rose", function() {
     const items = gildedRose.updateQuality();
     expect(items[0].quality).toBe(1);
   })
+
+  it("quality bounded at 0 and 50", function() {
+    const gildedRose = new Shop();
+    const q1 = -1;
+    const q2 = 51;
+    expect(gildedRose.boundQuality(q1)).toBe(0);
+    expect(gildedRose.boundQuality(q2)).toBe(50);
+
+  })
 });
