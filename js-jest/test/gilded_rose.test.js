@@ -78,4 +78,11 @@ describe("Gilded Rose", function() {
     expect(Shop.boundQuality(q2)).toBe(50);
 
   })
+
+  it("conjured quality degrades twice as fast as normal", function(){
+    const gildedRose = new Shop([new Item("Conjured", -1, 5), new Item("Conjured", 1, 7)]);
+    const items = gildedRose.updateQuality();
+    expect(items[0].quality).toBe(1);
+    expect(items[1].quality).toBe(5);
+  })
 });
